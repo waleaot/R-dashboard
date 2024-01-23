@@ -1,0 +1,58 @@
+---
+title: "SQL Assessment Dashboard"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(flexdashboard)
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(flexdashboard)
+```
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+####  Introduction & Overview 
+
+
+This is the dashboard show casing the outcome of the SQL Assessment for Welup Digital Cohort 6.
+
+At the end of the SQL Module, the students were tested on the knowledge of SQL. 
+
+Kudos to everyone who attempted the assessment.
+
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Contents
+
+A total of 45 persons attempted the assessment, only 44 scripts were graded, as one of the scripts were unreadable. 
+
+The table below shows the break down of performance
+
+```{r load file}
+
+#bring in file 
+
+file <- read.csv("abcd - Sheet1.csv")
+```
+
+
+```{r scores break down}
+
+Scores_bd <- file  %>% group_by(Scores) %>% summarise(
+    `no of persons` = n())
+
+
+knitr::kable(Scores_bd, format = "html")
+
+```
+
+
+
