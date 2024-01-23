@@ -1,0 +1,81 @@
+---
+title: "SQL Assessment information board"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+library(readr)
+library(dplyr)
+library(ggplot2)
+library(flexdashboard)
+```
+
+
+
+# Information board
+
+ 
+###  overview & contents
+This is the dashboard show casing the outcome of the SQL Assessment for Welup Digital Cohort 6.
+
+At the end of the SQL Module, the students were tested on the knowledge of SQL. 
+
+Kudos to everyone who attempted the assessment. 
+
+
+A total of 45 persons attempted the assessment, only 44 scripts were graded, as one of the scripts were unreadable. 
+
+
+```{r}
+
+#bring in file 
+
+file <- read.csv("abcd - Sheet1.csv")
+
+
+```
+
+## A break down of the scores
+
+```{r scores break down}
+
+Scores_bd <- file  %>% group_by(Scores) %>% summarise(
+    `no of persons` = n())
+
+
+#knitr::kable(Scores_bd, format = "html")
+
+```
+
+
+# Performance Plot
+
+```{r chart of scores}
+
+
+#reorder
+Scores_bd$Scores <- factor(Scores_bd$Scores, levels = Scores_bd$Scores[order(Scores_bd$`no of persons`)])
+
+ggplot(data = Scores_bd, aes( x = Scores, y = `no of persons`, fill =`no of persons`) )+  geom_bar( stat = "identity", color="cyan")  + ggtitle("Plot of Scores vs Frequency")
+       
+```
+
+The performance is encouraging. As More than half of the participating students have scored more than 15 (way above the half mark). 
+
+
+
+# Histogram plot 
+
+```{r score distribution}
+
+ggplot(data = file, aes( x = Scores) )+ 
+  
+  geom_histogram(color = "black", fill = "steelblue", binwidth = 0.9)  + ggtitle("Histogram plot of scores") + labs(x = "Scores", y = "Frequency")+  theme_minimal()
+  
+
+```
+
+This is the distribution of the scores. The scores are skewed to the left. This is a pointer that the scores of the participating students are densely populated in the range 15 - 20 interval.  Only a handful of persons have scored 10 & 5
